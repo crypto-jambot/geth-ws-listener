@@ -1,0 +1,31 @@
+{
+  "name": "@crypto-jambot/geth-ws-listener",
+  "version": "1.0.0-0",
+  "description": "Client that listens to logs on the ethereum blockchain & notifies RabbitMQ channel.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "patch": "npm version patch --git-tag-version"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/amqplib": "^0.10.1",
+    "@types/uuid": "^9.0.1",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@crypto-jambot/bigquery-utils": "^1.1.1",
+    "@crypto-jambot/secret-manager-utils": "^1.1.1",
+    "@crypto-jambot/web3-utils": "^1.0.5",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v3-core": "^1.0.1",
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.0.3",
+    "uuid": "^9.0.0"
+  }
+}
