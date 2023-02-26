@@ -32,7 +32,6 @@ export async function startListening(
 ) {
     return new Promise<NodeJS.Timer>(async (resolve, reject) => {
         try {
-            console.log(INTERVAL_CONSTANT);
             let subscription = await subscribe(
                 eth,
                 addresses,
