@@ -22,10 +22,10 @@
     "@crypto-jambot/bigquery-utils": "^1.1.1",
     "@crypto-jambot/secret-manager-utils": "^1.1.1",
     "@crypto-jambot/web3-utils": "^1.0.5",
+    "@google-cloud/pubsub": "^3.6.0",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v3-core": "^1.0.1",
     "amqplib": "^0.10.3",
-    "dotenv": "^16.0.3",
-    "uuid": "^9.0.0"
+    "dotenv": "^16.0.3"
   }
 }
