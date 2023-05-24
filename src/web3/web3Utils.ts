@@ -2,11 +2,8 @@ import { Eth, Web3Utils } from "@crypto-jambot/web3-utils";
 import { Subscription } from "web3-core-subscriptions";
 import { Log } from "web3-core";
 import { SecretUtil } from "@crypto-jambot/secret-manager-utils";
-import { Channel } from "amqplib";
 import { getData, getV2SwapHash, getV3SwapHash } from "./logUtils";
 import { INTERVAL_CONSTANT } from "../constant/constant";
-import { sendMessage } from "../rabbit/rabbitUtils";
-import { v4 as uuidV4 } from "uuid";
 
 let RUNNING_COUNT = 0;
 export function setupWeb3() {
@@ -27,7 +24,7 @@ export function setupWeb3() {
 export async function startListening(
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    sendToTopic: (data: string) => Promise<string>,
     logMessageCount = false
 ) {
     return new Promise<NodeJS.Timer>(async (resolve, reject) => {
@@ -35,14 +32,14 @@ export async function startListening(
             let subscription = await subscribe(
                 eth,
                 addresses,
-                channel,
+                sendToTopic,
                 logMessageCount
             );
             const interval = await restartListener(
                 subscription,
                 eth,
                 addresses,
-                channel,
+                sendToTopic,
                 logMessageCount
             );
             resolve(interval);
@@ -55,7 +52,7 @@ export async function startListening(
 function subscribe(
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    sendToTopic: (data: string) => Promise<string>,
     logMessageCount = false
 ) {
     return new Promise<Subscription<Log>>((resolve, reject) => {
@@ -66,21 +63,26 @@ function subscribe(
                     topics: [[getV2SwapHash(eth), getV3SwapHash(eth)]],
                     address: addresses,
                 },
-                (error, { address, data, topics }) => {
+                async (error, { address, data, topics }) => {
                     if (error) {
                         reject(error);
                         return;
+                    }
+                    try {
+                        await sendToTopic(
+                            JSON.stringify({
+                                ...getData(eth, data, topics),
+                                id: address,
+                            })
+                        );
+                    } catch (err: any) {
+                        throw new Error(err.message);
                     }
                     if (logMessageCount) {
                         RUNNING_COUNT++;
                         console.clear();
                         console.log(`Messages Sent: ${RUNNING_COUNT}`);
                     }
-                    sendMessage(channel, {
-                        ...getData(eth, data, topics),
-                        address,
-                        id: uuidV4(),
-                    });
                 }
             );
             resolve(subscription);
@@ -94,7 +96,7 @@ function restartListener(
     listener: Subscription<Log>,
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    sendToTopic: (data: string) => Promise<string>,
     logMessageCount = false
 ) {
     return new Promise<NodeJS.Timer>((resolve, reject) => {
@@ -107,7 +109,7 @@ function restartListener(
                 listener = await subscribe(
                     eth,
                     addresses,
-                    channel,
+                    sendToTopic,
                     logMessageCount
                 );
             }, INTERVAL_CONSTANT);
