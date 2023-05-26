@@ -2,6 +2,10 @@ import { connect, Channel } from "amqplib";
 
 type Message = any;
 const queue = process.env.QUEUE as string;
+
+/**
+ * @deprecated since version 1.0.2
+ */
 export function setupChannel() {
     return new Promise<Channel>(async (resolve, reject) => {
         try {
@@ -16,6 +20,9 @@ export function setupChannel() {
     });
 }
 
+/**
+ * @deprecated since version 1.0.2
+ */
 export function sendMessage(channel: Channel, data: Message) {
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(data)));
 }
