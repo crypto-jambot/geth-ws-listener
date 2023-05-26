@@ -1,6 +1,6 @@
 {
   "name": "@crypto-jambot/geth-ws-listener",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Client that listens to logs on the ethereum blockchain & notifies RabbitMQ channel.",
   "main": "dist/index.js",
   "scripts": {
