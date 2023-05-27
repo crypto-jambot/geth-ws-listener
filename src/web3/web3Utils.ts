@@ -2,7 +2,12 @@ import { Eth, Web3Utils } from "@crypto-jambot/web3-utils";
 import { Subscription } from "web3-core-subscriptions";
 import { Log } from "web3-core";
 import { SecretUtil } from "@crypto-jambot/secret-manager-utils";
-import { getData, getV2SwapHash, getV3SwapHash } from "./logUtils";
+import {
+    getData,
+    getPancakeSwapHash,
+    getV2SwapHash,
+    getV3SwapHash,
+} from "./logUtils";
 import { INTERVAL_CONSTANT } from "../constant/constant";
 
 let RUNNING_COUNT = 0;
@@ -60,7 +65,13 @@ function subscribe(
             const subscription = eth.subscribe(
                 "logs",
                 {
-                    topics: [[getV2SwapHash(eth), getV3SwapHash(eth)]],
+                    topics: [
+                        [
+                            getV2SwapHash(eth),
+                            getV3SwapHash(eth),
+                            getPancakeSwapHash(eth),
+                        ],
+                    ],
                     address: addresses,
                 },
                 async (error, { address, data, topics }) => {
