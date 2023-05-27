@@ -1,5 +1,6 @@
 import UniswapV2Pair from "@uniswap/v2-core/build/IUniswapV2Pair.json";
 import UniswapV3Pool from "@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json";
+import PancakeswapV3Pool from "@pancakeswap/v3-core/artifacts/contracts/PancakeV3Pool.sol/PancakeV3Pool.json";
 import { AbiInput, AbiItem, Eth } from "@crypto-jambot/web3-utils";
 
 export function getData(eth: Eth, data: string, topics: string[]) {
@@ -27,6 +28,10 @@ export function getV2SwapHash(eth: Eth) {
 }
 export function getV3SwapHash(eth: Eth) {
     return eth.abi.encodeEventSignature(UniswapV3Pool.abi[9] as AbiItem);
+}
+
+export function getPancakeSwapHash(eth: Eth) {
+    return eth.abi.encodeEventSignature(PancakeswapV3Pool.abi[10] as AbiItem);
 }
 export function resolveEventTypes(eth: Eth, eventHash: string) {
     switch (eventHash) {
