@@ -3,6 +3,9 @@ import { PubSub } from "@google-cloud/pubsub";
 const client = new PubSub();
 const TOPIC = process.env.TOPIC;
 
+/**
+ * @deprecated since version 1.0.3
+ */
 export function sendToTopic(data: string) {
     const dataBuffer = Buffer.from(data);
     return new Promise<string>((resolve, reject) => {

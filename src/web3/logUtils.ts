@@ -6,6 +6,7 @@ import { AbiInput, AbiItem, Eth } from "@crypto-jambot/web3-utils";
 export function getData(eth: Eth, data: string, topics: string[]) {
     const eventHash = topics[0];
     const eventTypes = resolveEventTypes(eth, eventHash);
+    if (!eventTypes) return;
     const decodedData = eth.abi.decodeLog(
         eventTypes as AbiInput[],
         data,
@@ -39,5 +40,7 @@ export function resolveEventTypes(eth: Eth, eventHash: string) {
             return UniswapV2Pair.abi[3].inputs;
         case getV3SwapHash(eth):
             return UniswapV3Pool.abi[9].inputs;
+        case getPancakeSwapHash(eth):
+            return PancakeswapV3Pool.abi[10].inputs;
     }
 }

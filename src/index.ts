@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { getAddresses } from "./bigquery/bigqueryUtils";
 import { setupWeb3, startListening } from "./web3/web3Utils";
-import { sendToTopic } from "./pubsub/pubsubUtils";
+import { setupChannel } from "./rabbit/rabbitUtils";
 
 (async () => {
     let interval: NodeJS.Timer | null = null;
@@ -13,7 +13,7 @@ import { sendToTopic } from "./pubsub/pubsubUtils";
         interval = await startListening(
             await setupWeb3(),
             await getAddresses(),
-            sendToTopic,
+            await setupChannel(),
             logMessageCount
         );
     } catch (err) {
