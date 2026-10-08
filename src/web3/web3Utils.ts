@@ -31,7 +31,7 @@ export function setupWeb3() {
 export async function startListening(
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    // channel: Channel,
     logMessageCount = false
 ) {
     return new Promise<NodeJS.Timer>(async (resolve, reject) => {
@@ -39,14 +39,14 @@ export async function startListening(
             let subscription = await subscribe(
                 eth,
                 addresses,
-                channel,
+                // channel,
                 logMessageCount
             );
             const interval = await restartListener(
                 subscription,
                 eth,
                 addresses,
-                channel,
+                // channel,
                 logMessageCount
             );
             resolve(interval);
@@ -59,7 +59,7 @@ export async function startListening(
 function subscribe(
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    // channel: Channel,
     logMessageCount = false
 ) {
     return new Promise<Subscription<Log>>((resolve, reject) => {
@@ -82,7 +82,7 @@ function subscribe(
                         return;
                     }
                     try {
-                        await sendMessage(channel, {
+                        await sendMessage({
                             ...getData(eth, data, topics),
                             id: address,
                         });
@@ -107,7 +107,7 @@ function restartListener(
     listener: Subscription<Log>,
     eth: Eth,
     addresses: string[],
-    channel: Channel,
+    // channel: Channel,
     logMessageCount = false
 ) {
     return new Promise<NodeJS.Timer>((resolve, reject) => {
@@ -120,7 +120,7 @@ function restartListener(
                 listener = await subscribe(
                     eth,
                     addresses,
-                    channel,
+                    // channel,
                     logMessageCount
                 );
             }, INTERVAL_CONSTANT);

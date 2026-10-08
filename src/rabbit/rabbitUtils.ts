@@ -1,4 +1,5 @@
 import { Channel, connect } from "amqplib";
+import axios from "axios";
 
 type Message = any;
 const queue = process.env.QUEUE as string;
@@ -17,6 +18,9 @@ export function setupChannel() {
     });
 }
 
-export function sendMessage(channel: Channel, data: Message) {
-    channel.sendToQueue(queue, Buffer.from(JSON.stringify(data)));
+export function sendMessage(data: Message) {
+    // channel.sendToQueue(queue, Buffer.from(JSON.stringify(data)));
+    axios.post("http://localhost:8080/", {
+        message: { data: btoa(JSON.stringify(data)) },
+    });
 }

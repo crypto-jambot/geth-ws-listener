@@ -13,7 +13,7 @@ import { setupChannel } from "./rabbit/rabbitUtils";
         interval = await startListening(
             await setupWeb3(),
             await getAddresses(),
-            await setupChannel(),
+            // await setupChannel(),
             logMessageCount
         );
     } catch (err) {
